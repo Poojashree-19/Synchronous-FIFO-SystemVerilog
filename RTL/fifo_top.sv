@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module fifo_memory #(
     parameter DATA_WIDTH = 8,
     parameter DEPTH = 8
@@ -5,22 +7,28 @@ module fifo_memory #(
     input  logic                     clk,
     input  logic                     wr_en,
     input  logic                     rd_en,
+    input  logic                     full,
+
     input  logic [$clog2(DEPTH)-1:0] write_addr,
     input  logic [$clog2(DEPTH)-1:0] read_addr,
+
     input  logic [DATA_WIDTH-1:0]    write_data,
+
     output logic [DATA_WIDTH-1:0]    read_data
 );
 
 logic [DATA_WIDTH-1:0] memory [0:DEPTH-1];
 
 // Write
-always_ff @(posedge clk) begin
-    if (wr_en)
+always_ff @(posedge clk)
+begin
+    if (wr_en && !full)
         memory[write_addr] <= write_data;
 end
 
 // Read
-always_comb begin
+always_comb
+begin
     if (rd_en)
         read_data = memory[read_addr];
     else
@@ -28,7 +36,6 @@ always_comb begin
 end
 
 endmodule
-
 `timescale 1ns/1ps
 
 module write_pointer #(
@@ -121,10 +128,10 @@ fifo_memory #(
     .DATA_WIDTH(DATA_WIDTH),
     .DEPTH(DEPTH)
 ) memory (
-
     .clk(clk),
     .wr_en(wr_en),
     .rd_en(rd_en),
+    .full(full),
 
     .write_addr(write_ptr[$clog2(DEPTH)-1:0]),
     .read_addr(read_ptr[$clog2(DEPTH)-1:0]),
@@ -136,7 +143,6 @@ fifo_memory #(
 write_pointer #(
     .DEPTH(DEPTH)
 ) write_ptr_inst (
-
     .clk(clk),
     .reset(reset),
     .wr_en(wr_en),
@@ -148,7 +154,6 @@ write_pointer #(
 read_pointer #(
     .DEPTH(DEPTH)
 ) read_ptr_inst (
-
     .clk(clk),
     .reset(reset),
     .rd_en(rd_en),
@@ -160,7 +165,6 @@ read_pointer #(
 fifo_control #(
     .DEPTH(DEPTH)
 ) fifo_control_inst (
-
     .write_ptr(write_ptr),
     .read_ptr(read_ptr),
 
