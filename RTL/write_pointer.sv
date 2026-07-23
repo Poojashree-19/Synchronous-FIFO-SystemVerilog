@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module write_pointer #(
     parameter DEPTH = 8
 )(
@@ -6,7 +8,7 @@ module write_pointer #(
     input  logic wr_en,
     input  logic full,
 
-    output logic [$clog2(DEPTH)-1:0] write_ptr
+    output logic [$clog2(DEPTH):0] write_ptr
 );
 
 always_ff @(posedge clk or posedge reset) begin
