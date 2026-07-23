@@ -8,7 +8,8 @@ module write_pointer_tb;
     logic reset;
     logic wr_en;
     logic full;
-    logic [$clog2(DEPTH)-1:0] write_ptr;
+
+    logic [$clog2(DEPTH):0] write_ptr;
 
     // DUT
     write_pointer #(
@@ -29,34 +30,28 @@ module write_pointer_tb;
 
     // Monitor
     initial begin
-        $monitor("Time=%0t | reset=%b | wr_en=%b | full=%b | write_ptr=%0d",
-                  $time, reset, wr_en, full, write_ptr);
+        $monitor("Time=%0t | reset=%b | wr_en=%b | full=%b | write_ptr=%b",
+                 $time, reset, wr_en, full, write_ptr);
     end
 
     // Test Sequence
     initial begin
 
-        // Initialize
         reset = 1;
         wr_en = 0;
         full  = 0;
 
         #10;
 
-        // Release Reset
         reset = 0;
-
-        // Increment pointer
         wr_en = 1;
 
         repeat (8)
             #10;
 
-        // FIFO Full (Pointer should not increment)
         full = 1;
         #20;
 
-        // Disable write
         wr_en = 0;
         full  = 0;
         #20;
