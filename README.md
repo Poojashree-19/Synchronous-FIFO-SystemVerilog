@@ -219,28 +219,6 @@ using **EPWave / GTKWave**.
 
 ---
 
-# Sample Waveforms
-
-## FIFO Memory
-
-*(Insert waveform image here)*
-
-## Write Pointer
-
-*(Insert waveform image here)*
-
-## Read Pointer
-
-*(Insert waveform image here)*
-
-## FIFO Control
-
-*(Insert waveform image here)*
-
-## Top-Level FIFO
-
-*(Insert waveform image here)*
-
 ---
 
 # Limitations
