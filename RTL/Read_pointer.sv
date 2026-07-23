@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module read_pointer #(
     parameter DEPTH = 8
 )(
@@ -6,7 +8,7 @@ module read_pointer #(
     input  logic rd_en,
     input  logic empty,
 
-    output logic [$clog2(DEPTH)-1:0] read_ptr
+    output logic [$clog2(DEPTH):0] read_ptr
 );
 
 always_ff @(posedge clk or posedge reset) begin
